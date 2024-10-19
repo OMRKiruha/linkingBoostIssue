@@ -13,7 +13,7 @@ message("\n${Yellow}==> Project: ${PROJECT_NAME} (${CMAKE_CURRENT_LIST_DIR}) ${C
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXE_LINKER_FLAGS "-static-libstdc++ -static-libgcc")
+#set(CMAKE_EXE_LINKER_FLAGS "-static-libstdc++ -static-libgcc")
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")   # -O2 -g0
 cmake_policy(SET CMP0167 NEW)
@@ -38,20 +38,22 @@ else ()
 endif ()
 
 # Boost =======================================================================
-find_package(Boost REQUIRED)
-if (NOT Boost_FOUND)
-    message("${Red}==> !!! Boost not found${ColourReset}")
-else ()
-    message("${Green}==> !!! Boost found${ColourReset}")
-endif ()
+set(BOOST_ROOT "../../boost/")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "D:/boost/" )
+message("${Blue}==> BOOST_ROOT ${BOOST_ROOT} ${ColourReset}")
+message("${Blue}==> CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${ColourReset}")
 
 set(Boost_USE_STATIC_LIBS ON)  # only find static libs
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_USE_DEBUG_LIBS ON)  # only find release libs
+set(Boost_USE_RELEASE_LIBS OFF)  # only find release libs
 
 find_package(Boost COMPONENTS
         headers
         system
+        asio
+        beast
         context
         REQUIRED)
 
